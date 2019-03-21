@@ -11,12 +11,19 @@ import options from '../options';
  */
 export function diffProps(dom, newProps, oldProps, isSvg) {
 	for (let i in newProps) {
-		if (i!=='children' && i!=='key' && (!oldProps || ((i==='value' || i==='checked') ? dom : oldProps)[i]!==newProps[i])) {
+		if (i!=='children' && i!=='key' && i!=='value' && (!oldProps || (i==='checked' ? dom : oldProps)[i]!==newProps[i])) {
 			setProperty(dom, i, newProps[i], oldProps[i], isSvg);
 		}
 	}
+
+	// `value` needs to be applied after an input's `min`, `max` and `step`
+	// properties are set. See preact/#850
+	if (newProps.value!==dom.value) {
+		dom.value = newProps.value;
+	}
+
 	for (let i in oldProps) {
-		if (i!=='children' && i!=='key' && (!newProps || !(i in newProps))) {
+		if (i!=='children' && i!=='key' && !(i in newProps)) {
 			setProperty(dom, i, null, oldProps[i], isSvg);
 		}
 	}

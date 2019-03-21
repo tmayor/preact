@@ -270,9 +270,9 @@ function diffElementNodes(dom, newVNode, oldVNode, context, isSvg, excessDomChil
 					dom.innerHTML = newHtml && newHtml.__html || '';
 				}
 			}
-			if (newProps.multiple) {
-				dom.multiple = newProps.multiple;
-			}
+			// Needs to be set before diffing children for <select>'s with multiple
+			// options.
+			if (newProps.multiple) dom.multiple = newProps.multiple;
 			diffChildren(dom, newVNode, oldVNode, context, newVNode.type==='foreignObject' ? false : isSvg, excessDomChildren, mounts, ancestorComponent);
 			diffProps(dom, newProps, oldProps, isSvg);
 		}
