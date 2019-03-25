@@ -18,9 +18,7 @@ export function diffProps(dom, newProps, oldProps, isSvg) {
 
 	// `value` needs to be applied after an input's `min`, `max` and `step`
 	// properties are set. See preact/#850
-	if (newProps.value!==dom.value) {
-		dom.value = newProps.value;
-	}
+	if (newProps.value!=null) dom.value = newProps.value;
 
 	for (let i in oldProps) {
 		if (i!=='children' && i!=='key' && !(i in newProps)) {
